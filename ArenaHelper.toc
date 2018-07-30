@@ -1,0 +1,16 @@
+## Interface: 80000
+## Author: Uberlicious2188
+## Version: 8.0.0
+## Title: ArenaHelper
+## Notes: SUI v5.6 by Syiana-Aegwynn
+## SavedVariables: ArenaHelperDB
+
+## CONFIG
+config.lua
+configui.lua
+
+## UI
+#core\core.lua
+
+## MISCS
+#misc\range.lua
