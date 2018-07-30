@@ -1,3 +1,5 @@
+local addon, ns = ...
+
 ArenaHelperDB = {}
 
 local CF=CreateFrame("Frame")
@@ -11,6 +13,7 @@ print("Welcome to |cff009cffArenaHelper|r use |CFFFE8A0E/arenahelper|r for Optio
 		local function Defaults()
 			ArenaHelperDB.RESET = true
 			ArenaHelperDB.NameplateNum = true
+			ArenaHelperDB.Gryphon = true
 		end
 		Defaults()
 	end
@@ -95,7 +98,7 @@ local function ArenaHelperSHOW()
 
 	--[[ Help ]] local function HELP()
 		StaticPopupDialogs["HELP"] = {
-			text = "Pls report Errors on curseforge.com",
+			text = "Please report Errors on curseforge.com",
 			button1 = "Close",
 			button2 = "Reset UI",
 			OnAccept = function()
@@ -140,40 +143,57 @@ local function ArenaHelperSHOW()
 
 	--[[ NameplateNum ]] local ArenaNameplateNumBtn = CreateFrame("CheckButton", nil, ArenaHelper, "OptionsBaseCheckButtonTemplate")
 	ArenaNameplateNumBtn:SetPoint("TOPLEFT", UITitle, "BOTTOMLEFT", 0, -10)
-	ArenaNameplateNumBtn:SetScript(
-		"OnClick",
-		function(frame)
+	ArenaNameplateNumBtn:SetScript("OnClick", function(frame)
 			local tick = frame:GetChecked()
-			ArenaHelperDB.UNITFRAMES = tick
+			ArenaHelperDB.NameplateNum = tick
 			if tick then
 				NameplateNum:Enable()
-				ArenaHelperDB.UNITFRAMES = true
+				ArenaHelperDB.NameplateNum = true
 			else
-				DEFAULT_CHAT_FRAME:AddMessage("Arena Nameplate Numbers Disabled", 1, 0, 0)
-				ArenaHelperDB.UNITFRAMES = false
+				NameplateNum:Disable()
+				ArenaHelperDB.NameplateNum = false
 			end
-		end
-	)
-	ArenaNameplateNumBtn:SetScript(
-		"OnShow",
-		function(frame)
-			frame:SetChecked(ArenaHelperDB.UNITFRAMES)
-		end
-	)
-
-	ArenaNameplateNumBtn:SetScript(
-		"OnEnter",
-		function(self)
+		end)
+	ArenaNameplateNumBtn:SetScript("OnShow", function(frame)
+			frame:SetChecked(ArenaHelperDB.NameplateNum)
+		end)
+	ArenaNameplateNumBtn:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_BOTTOM")
-			GameTooltip:AddLine("Adds arena target number to namesplates.", 248, 248, 255)
+			GameTooltip:AddLine("Adds arena target number to enemy nameplates.", 248, 248, 255)
 			GameTooltip:Show()
-		end
-	)
+		end)
 	ArenaNameplateNumBtn:SetScript("OnLeave", GameTooltip_Hide)
 
 	local ArenaNameplateNumBtnText = ArenaHelper:CreateFontString(nil, nil, "GameFontHighlight")
 	ArenaNameplateNumBtnText:SetPoint("LEFT", ArenaNameplateNumBtn, "RIGHT", 0, 1)
 	ArenaNameplateNumBtnText:SetText("Arena Nameplate Num")
+	
+		--[[ Gryphon Test ]] local Gryphon = CreateFrame("CheckButton", nil, ArenaHelper, "OptionsBaseCheckButtonTemplate")
+	Gryphon:SetPoint("TOPLEFT", UITitle, "BOTTOMLEFT", 0, -10)
+	Gryphon:SetScript("OnClick", function(frame)
+			local tick = frame:GetChecked()
+			ArenaHelperDB.Gryphon = tick
+			if tick then
+				Gryphon:Enable()
+				ArenaHelperDB.Gryphon = true
+			else
+				Gryphon:Disable()
+				ArenaHelperDB.Gryphon = false
+			end
+		end)
+	Gryphon:SetScript("OnShow", function(frame)
+			frame:SetChecked(ArenaHelperDB.NameplateNum)
+		end)
+	Gryphon:SetScript("OnEnter", function(self)
+			GameTooltip:SetOwner(self, "ANCHOR_BOTTOM")
+			GameTooltip:AddLine("Adds arena target number to enemy nameplates.", 248, 248, 255)
+			GameTooltip:Show()
+		end)
+	Gryphon:SetScript("OnLeave", GameTooltip_Hide)
+
+	local GryphonText = ArenaHelper:CreateFontString(nil, nil, "GameFontHighlight")
+	GryphonText:SetPoint("LEFT", Gryphon, "RIGHT", 0, 1)
+	GryphonText:SetText("Arena Nameplate Num")
 end
 
 local activ = false

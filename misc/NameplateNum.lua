@@ -24,3 +24,17 @@ function NameplateNum:Enable()
 		end
 	end)
 end
+
+function NameplateNum:Disable()
+	DEFAULT_CHAT_FRAME:AddMessage("Arena Nameplate Numbers Disabled", 0, 1, 0)
+	local U=UnitIsUnit 
+	hooksecurefunc("CompactUnitFrame_UpdateName", function(F)
+		if IsActiveBattlefieldArena() and F.unit:find("nameplate") then 
+			for i=1,5 do 
+				if U(F.unit,"arena"..i) then 
+					break
+				end
+			end
+		end
+	end)
+end

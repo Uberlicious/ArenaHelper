@@ -6,11 +6,7 @@
 ## SavedVariables: ArenaHelperDB
 
 ## CONFIG
-config.lua
 configui.lua
 
-## UI
-#core\core.lua
-
 ## MISCS
-#misc\range.lua
+misc\NameplateNum.lua
