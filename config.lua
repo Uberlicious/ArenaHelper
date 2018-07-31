@@ -1,3 +1,1 @@
 ﻿local addon, ns = ...
-local cfg = CreateFrame("Frame")
-

@@ -1,6 +1,6 @@
 local addon, ns = ...
 
-ArenaHelperDB = {}
+local ArenaHelperDB = {}
 
 local CF=CreateFrame("Frame")
 CF:RegisterEvent("PLAYER_LOGIN")
@@ -14,6 +14,7 @@ print("Welcome to |cff009cffArenaHelper|r use |CFFFE8A0E/arenahelper|r for Optio
 			ArenaHelperDB.RESET = true
 			ArenaHelperDB.NameplateNum = true
 			ArenaHelperDB.Gryphon = true
+			ArenaHelperDB.MaxDebuffs = true
 		end
 		Defaults()
 	end
@@ -139,7 +140,6 @@ local function ArenaHelperSHOW()
 	local UITitle = ArenaHelper:CreateFontString(nil, nil, "GameFontNormalLarge")
 	UITitle:SetPoint("TOPLEFT", 20, -75)
 	UITitle:SetText("General")
-	--
 
 	--[[ NameplateNum ]] local ArenaNameplateNumBtn = CreateFrame("CheckButton", nil, ArenaHelper, "OptionsBaseCheckButtonTemplate")
 	ArenaNameplateNumBtn:SetPoint("TOPLEFT", UITitle, "BOTTOMLEFT", 0, -10)
@@ -147,11 +147,13 @@ local function ArenaHelperSHOW()
 			local tick = frame:GetChecked()
 			ArenaHelperDB.NameplateNum = tick
 			if tick then
-				NameplateNum:Enable()
+				DEFAULT_CHAT_FRAME:AddMessage("Arena Nameplate Numbers Enabled", 0, 1, 0)
 				ArenaHelperDB.NameplateNum = true
+				NameplateNum.Enable()
 			else
-				NameplateNum:Disable()
+				DEFAULT_CHAT_FRAME:AddMessage("Arena Nameplate Numbers Disabled", 0, 1, 0)
 				ArenaHelperDB.NameplateNum = false
+				NameplateNum.Disable()
 			end
 		end)
 	ArenaNameplateNumBtn:SetScript("OnShow", function(frame)
@@ -166,34 +168,33 @@ local function ArenaHelperSHOW()
 
 	local ArenaNameplateNumBtnText = ArenaHelper:CreateFontString(nil, nil, "GameFontHighlight")
 	ArenaNameplateNumBtnText:SetPoint("LEFT", ArenaNameplateNumBtn, "RIGHT", 0, 1)
-	ArenaNameplateNumBtnText:SetText("Arena Nameplate Num")
+	ArenaNameplateNumBtnText:SetText("Nameplate Numbers")
 	
-		--[[ Gryphon Test ]] local Gryphon = CreateFrame("CheckButton", nil, ArenaHelper, "OptionsBaseCheckButtonTemplate")
-	Gryphon:SetPoint("TOPLEFT", UITitle, "BOTTOMLEFT", 0, -10)
-	Gryphon:SetScript("OnClick", function(frame)
+	--[[ Gryphon Test ]] local MaxDebuffsBtn = CreateFrame("CheckButton", nil, ArenaHelper, "OptionsBaseCheckButtonTemplate")
+	MaxDebuffsBtn:SetPoint("TOPLEFT", ArenaNameplateNumBtn, "BOTTOMLEFT")
+	MaxDebuffsBtn:SetScript("OnClick", function(frame)
 			local tick = frame:GetChecked()
-			ArenaHelperDB.Gryphon = tick
+			ArenaHelperDB.MaxDebuffs = tick
 			if tick then
-				Gryphon:Enable()
-				ArenaHelperDB.Gryphon = true
+				print("Enable")
+				ArenaHelperDB.MaxDebuffs = true
 			else
-				Gryphon:Disable()
-				ArenaHelperDB.Gryphon = false
+				ArenaHelperDB.MaxDebuffs = false
 			end
 		end)
-	Gryphon:SetScript("OnShow", function(frame)
-			frame:SetChecked(ArenaHelperDB.NameplateNum)
+	MaxDebuffsBtn:SetScript("OnShow", function(frame)
+			frame:SetChecked(ArenaHelperDB.MaxDebuffs)
 		end)
-	Gryphon:SetScript("OnEnter", function(self)
+	MaxDebuffsBtn:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_BOTTOM")
-			GameTooltip:AddLine("Adds arena target number to enemy nameplates.", 248, 248, 255)
+			GameTooltip:AddLine("Increase max debuffs to 12 to left of party frames (requires raid style frames)", 248, 248, 255)
 			GameTooltip:Show()
 		end)
-	Gryphon:SetScript("OnLeave", GameTooltip_Hide)
+	MaxDebuffsBtn:SetScript("OnLeave", GameTooltip_Hide)
 
-	local GryphonText = ArenaHelper:CreateFontString(nil, nil, "GameFontHighlight")
-	GryphonText:SetPoint("LEFT", Gryphon, "RIGHT", 0, 1)
-	GryphonText:SetText("Arena Nameplate Num")
+	local MaxDebuffsText = ArenaHelper:CreateFontString(nil, nil, "GameFontHighlight")
+	MaxDebuffsText:SetPoint("LEFT", MaxDebuffsBtn, "RIGHT", 0, 1)
+	MaxDebuffsText:SetText("Increase debuffs")
 end
 
 local activ = false
@@ -206,3 +207,5 @@ local activ = false
 	end
 end
 SLASH_ArenaHelper1 = "/ArenaHelper"
+
+return ArenaHelperDB

@@ -10,3 +10,5 @@ configui.lua
 
 ## MISCS
 misc\NameplateNum.lua
+misc\Gryphon.lua
+misc\MaxDebuffs.lua

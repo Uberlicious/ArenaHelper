@@ -1,17 +1,17 @@
 --[[ArenaHelper Nameplate Num v1.0]]
 
-local NameplateNum = {}
+NameplateNum = {}
 
-local CF=CreateFrame("Frame")
-CF:RegisterEvent("PLAYER_LOGIN")
-CF:SetScript("OnEvent", function(self, event)
+local NameplateNum=CreateFrame("Frame")
+NameplateNum:RegisterEvent("PLAYER_LOGIN")
+NameplateNum:SetScript("OnEvent", function(self, event)
 
-if AddonHelperDB.NameplateNum then
-	NameplateNum:Enable
+if ArenaHelperDB.NameplateNum then
+	self:Enable()
 end
+end)
 
-function NameplateNum:Enable()
-	DEFAULT_CHAT_FRAME:AddMessage("Arena Nameplate Numbers Enabled", 0, 1, 0)
+function NameplateNum.Enable()
 	local U=UnitIsUnit 
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(F)
 		if IsActiveBattlefieldArena() and F.unit:find("nameplate") then 
@@ -25,7 +25,7 @@ function NameplateNum:Enable()
 	end)
 end
 
-function NameplateNum:Disable()
+function NameplateNum.Disable()
 	DEFAULT_CHAT_FRAME:AddMessage("Arena Nameplate Numbers Disabled", 0, 1, 0)
 	local U=UnitIsUnit 
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(F)
@@ -38,3 +38,5 @@ function NameplateNum:Disable()
 		end
 	end)
 end
+
+return NameplateNum
