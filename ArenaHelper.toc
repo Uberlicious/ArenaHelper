@@ -6,9 +6,9 @@
 ## SavedVariables: ArenaHelperDB
 
 ## CONFIG
-configui.lua
+Config.lua
 
 ## MISCS
 misc\NameplateNum.lua
-misc\Gryphon.lua
 misc\MaxDebuffs.lua
+misc\PartyMark.lua
