@@ -24,7 +24,7 @@ end
 			self.ShowOptions()
 		end,
 		OnCancel = function()
-			HelperDB.RESET = true
+			HelperDB_reset()
 			ReloadUI()
 		end,
 		timeout = 0,
