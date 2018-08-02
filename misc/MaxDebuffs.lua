@@ -6,12 +6,12 @@ local MaxDebuffs=CreateFrame("Frame")
 MaxDebuffs:RegisterEvent("PLAYER_ENTERING_WORLD")
 MaxDebuffs:SetScript("OnEvent", function(self, event)
 	local _, instanceType = IsInInstance()
-	if instanceType == "pvp" or instanceType == "arena" then
+	if instanceType == "pvp" or instanceType == "arena" and HelperDB.MaxDebuffs then
 		MaxDebuffs_Enable()
 	end
 end)
 
-function MaxDebuffs_Enable()
+local function MaxDebuffs_Enable()
 	function sp(f,i) 
 		tr="TOPRIGHT"
 		f2=f.debuffFrames

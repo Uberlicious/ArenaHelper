@@ -2,6 +2,8 @@ local addon, ns = ...
 
 --local ArenaHelperDB = {}
 
+HelperDB = {}
+
 local ArenaHelper=CreateFrame("Frame")
 ArenaHelper:SetScript("OnEvent", function(self, event, ...) return self[event] and self[event](self, ...) end)
 ArenaHelper:RegisterEvent("ADDON_LOADED")
@@ -16,20 +18,40 @@ defaults = {
 }
 
 function ArenaHelper:ADDON_LOADED()
-	local function initDB(def, tbl)
+	local function initDB(def, tbl, saved)
+		print("init")
 		if type(def) ~= "table" then return {} end
 		if type(tbl) ~= "table" then tbl = {} end
-		if type(tbl) == "table" and tbl.reset then tbl = {} end
-		for k,v in pairs(def) do
-			if type(v) == "table" then
-				tbl[k] = initDB(v, tbl[k])
-			elseif type(tbl[k]) ~= type(v) then
-				tbl[k] = v
-			end
+		if type(saved) ~= "table" then return {} end
+		for k, v in pairs(def) do
+		  if type(v) == "table" then
+		    tbl[k] = initDB(v, tbl[k], saved[k])
+		  elseif type(tbl[k]) ~= type(v) and saved[k] ~= nil then
+			tbl[k] = saved[k]
+		  elseif type(tbl[k]) ~= type(v) and saved[k] == nil then
+		    tbl[k] = v
+		  end
 		end
 		return tbl
 	end
-ArenaHelperDB = initDB(defaults, ArenaHelperDB)
+	HelperDB = initDB(defaults, HelperDB, ArenaHelperDB)
+	self:UnregisterEvent("ADDON_LOADED")
+end
+
+function ArenaHelper:PLAYER_LOGOUT()
+	local function updateSave(def, tbl, saved)
+		for k,v in pairs(tbl) do
+			if type(v) == "table" then
+				saved[k] = updateSave(def[k], v, saved[k])
+			elseif type(saved[k]) ~= type(v) and v ~= def[k] then
+				saved[k] = v
+			elseif type(saved[k]) ~= "table" and saved[k] == def[k] then
+				saved[k] = nil
+			end
+		end
+		return saved
+	end
+	ArenaHelperDB = initDB(defaults, HelperDB, ArenaHelperDB)
 end
 
 --[[
@@ -57,4 +79,4 @@ end
 SLASH_ARENAHELPER1 = "/arenahelper"
 SLASH_ARENAHELPER2 = "/ah"
 
-return ArenaHelperDB
+return HelperDB

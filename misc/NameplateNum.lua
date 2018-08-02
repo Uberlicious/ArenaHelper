@@ -6,7 +6,7 @@ local NameplateNum=CreateFrame("Frame")
 NameplateNum:RegisterEvent("PLAYER_LOGIN")
 NameplateNum:SetScript("OnEvent", function(self, event)
 
-	if ArenaHelperDB.NameplateNum then
+	if HelperDB.NameplateNum then
 		NameplateNum_Enabled()
 	end
 end)

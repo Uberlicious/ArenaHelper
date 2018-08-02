@@ -24,7 +24,7 @@ end
 			self.ShowOptions()
 		end,
 		OnCancel = function()
-			ArenaHelperDB.RESET = true
+			HelperDB.RESET = true
 			ReloadUI()
 		end,
 		timeout = 0,
@@ -84,14 +84,14 @@ Options:SetScript("OnShow", function(self)
 	NameplateNumBtn:SetScript("OnClick", function(this)
 		local checked = not not this:GetChecked()
 		PlaySound(checked and SOUND_ON or SOUND_OFF)
-		ArenaHelperDB.NameplateNum = checked
+		HelperDB.NameplateNum = checked
 		if checked then
 			DEFAULT_CHAT_FRAME:AddMessage("Arena Nameplate Numbers Enabled", 0, 1, 0)
-			ArenaHelperDB.NameplateNum = true
+			HelperDB.NameplateNum = true
 			NameplateNum_Enabled()
 		else
 			DEFAULT_CHAT_FRAME:AddMessage("Arena Nameplate Numbers Disabled", 1, 0, 0)
-			ArenaHelperDB.NameplateNum = false
+			HelperDB.NameplateNum = false
 		end
 	end)
 
@@ -102,12 +102,12 @@ Options:SetScript("OnShow", function(self)
 	MaxDebuffsBtn:SetScript("OnClick", function(this)
 		local checked = not not this:GetChecked()
 		PlaySound(checked and SOUND_ON or SOUND_OFF)
-		ArenaHelperDB.MaxDebuffs = checked
+		HelperDB.MaxDebuffs = checked
 		if checked then
 			print("Enable")
-			ArenaHelperDB_MaxDebuffs = true
+			HelperDB.MaxDebuffs = true
 		else
-			ArenaHelperDB_MaxDebuffs = false
+			HelperDB.MaxDebuffs = false
 		end
 	end)
 
