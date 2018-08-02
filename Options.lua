@@ -1,12 +1,8 @@
-﻿local addon, ns = ...
-
---[[
+﻿--[[
 	ArenaHelper Options Menu
 ]]--
 
 local addon, ns = ...
-
-Opt = {}
 
 local SOUND_OFF = SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF
 local SOUND_ON = SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON
@@ -15,7 +11,7 @@ local Options = CreateFrame("Frame", "ArenaHelperOptions", InterfaceOptionsFrame
 Options.name = GetAddOnMetadata(addon, "Title") or addon
 InterfaceOptions_AddCategory(Options)
 
-function opt.ShowOptions()
+function Opt_ShowOptions()
 	InterfaceOptionsFrame_OpenToCategory(Options)
 end
 
@@ -53,22 +49,22 @@ Options:SetScript("OnShow", function(self)
 	SubText:SetJustifyV("TOP")
 	SubText:SetText("Useful PvP Tools.")
 
-	--[[MarkParty Button]] 	local MarkParty = CreateFrame("Button", nil, SUI, "UIPanelButtonGrayTemplate")
-	MarkParty:SetPoint("RIGHT", Title, "CENTER", 30, 0)
+	--[[MarkParty Button]] 	local MarkParty = CreateFrame("Button", "$parentMarkParty" , self, "UIPanelButtonTemplate")
+	MarkParty:SetPoint("LEFT", Title, "RIGHT", 30, 0)
 	MarkParty:SetWidth(125)
 	MarkParty:SetHeight(30)
-	MarkParty:SetText("Mark Party Members")
+	MarkParty:SetText("Mark Party")
 
 	MarkParty:SetScript(
 		"OnClick",
 		function(self, button, down)
-			Options:Hide()
-			PartyMark.markGroup()
+			ToggleGameMenu()
+			PartyMark_markGroup()
 		end
 	)
 
-	local help = CreateFrame("Button", nil, ArenaHelper, "UIPanelButtonTemplate")
-	help:SetPoint("BOTTOMLEFT", ArenaHelper, "BOTTOMLEFT", 16, 30)
+	local help = CreateFrame("Button", "$parentHelp" , self, "UIPanelButtonTemplate")
+	help:SetPoint("TOPRIGHT", MarkParty, "TOPRIGHT", 340, -525)
 	help:SetWidth(100)
 	help:SetHeight(25)
 	help:SetText("Help & Reset")
@@ -81,9 +77,9 @@ Options:SetScript("OnShow", function(self)
 		end
 	)
 
-	local NameplateNumBtn = CreateFrame("CheckButton", "$parentGryphon", self, "InterfaceOptionsCheckButtonTemplate")
+	local NameplateNumBtn = CreateFrame("CheckButton", "$parentNameplateNumBtn", self, "InterfaceOptionsCheckButtonTemplate")
 	NameplateNumBtn:SetPoint("TOPLEFT", SubText, "BOTTOMLEFT", 0, -12)
-	NameplateNumBtn.Text:SetText("Show Gryphons")
+	NameplateNumBtn.Text:SetText("Show Arena Target Numberss")
 	NameplateNumBtn.tooltipText = "Replate arena target nameplate names with target number."
 	NameplateNumBtn:SetScript("OnClick", function(this)
 		local checked = not not this:GetChecked()
@@ -92,11 +88,10 @@ Options:SetScript("OnShow", function(self)
 		if checked then
 			DEFAULT_CHAT_FRAME:AddMessage("Arena Nameplate Numbers Enabled", 0, 1, 0)
 			ArenaHelperDB.NameplateNum = true
-			NameplateNum.Enable()
+			NameplateNum_Enabled()
 		else
-			DEFAULT_CHAT_FRAME:AddMessage("Arena Nameplate Numbers Disabled", 0, 1, 0)
+			DEFAULT_CHAT_FRAME:AddMessage("Arena Nameplate Numbers Disabled", 1, 0, 0)
 			ArenaHelperDB.NameplateNum = false
-			NameplateNum.Disable()
 		end
 	end)
 
@@ -110,20 +105,15 @@ Options:SetScript("OnShow", function(self)
 		ArenaHelperDB.MaxDebuffs = checked
 		if checked then
 			print("Enable")
-			ArenaHelperDB.MaxDebuffs = true
+			ArenaHelperDB_MaxDebuffs = true
 		else
-			ArenaHelperDB.MaxDebuffs = false
+			ArenaHelperDB_MaxDebuffs = false
 		end
 	end)
 
 	function self:refresh()
-		Gryphon:SetChecked(UberuiDB.Gryphon)
-		Hotkey:SetChecked(UberuiDB.Hotkey)
-		Macroname:SetChecked(UberuiDB.Macroname)
 	end
 
 	self:refresh()
 	self:SetScript("OnShow", nil)
 end)
-
-return Opt

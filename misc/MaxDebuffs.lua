@@ -1,17 +1,17 @@
 --[[ArenaHelper Nameplate Num v1.0]]
-
-MaxDebuffs = {}
+local addon, ns = ...
+local MaxDebuffs
 
 local MaxDebuffs=CreateFrame("Frame")
 MaxDebuffs:RegisterEvent("PLAYER_ENTERING_WORLD")
 MaxDebuffs:SetScript("OnEvent", function(self, event)
 	local _, instanceType = IsInInstance()
 	if instanceType == "pvp" or instanceType == "arena" then
-		self.Enable()
+		MaxDebuffs_Enable()
 	end
 end)
 
-function MaxDebuffs.Enable()
+function MaxDebuffs_Enable()
 	function sp(f,i) 
 		tr="TOPRIGHT"
 		f2=f.debuffFrames
@@ -53,5 +53,3 @@ function MaxDebuffs.Enable()
 	end)
 	print("LOADED MAX DEBUFFS")
 end
-
-return MaxDebuffs

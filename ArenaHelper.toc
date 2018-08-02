@@ -7,8 +7,10 @@
 
 ## CONFIG
 Config.lua
+Options.lua
 
 ## MISCS
 misc\NameplateNum.lua
 misc\MaxDebuffs.lua
 misc\PartyMark.lua
+misc\PvPMacro.lua

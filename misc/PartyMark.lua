@@ -1,6 +1,6 @@
 --[[Party Mark Num v1.0]]
-
-PartyMark = {}
+local addon, ns = ...
+local PartyMark
 
 local usedMarkers = {false, false, false, false, false, false, false, false}
 
@@ -27,25 +27,7 @@ local markers = {
     DEMONHUNTER = {3, 7, 6, 2}
 };
 
---local ldbObject = LibStub("LibDataBroker-1.1"):NewDataObject("EasyPartyMarkersLDBObjectName", {
---    type = "launcher",
---    icon = "Interface\\ICONS\\ability_hunter_markedfordeath",
---    label = "EasyPartMarkers",
---    OnClick = function(self, button)
---        if button == 'LeftButton' then
---            EPM_markGroup()
---        elseif button == 'RightButton' then
---            EPM_toggleEventListeners()
---        end
---    end,
---    OnTooltipShow = function(tooltip)
---        tooltip:AddLine("EasyPartyMarkers");
---        tooltip:AddLine("Left Click: Mark your group");
---        tooltip:AddLine("Right Click: Toggle auto marking mode");
---    end,
---});
-
-function resetUsedMarkers()
+local function resetUsedMarkers()
     usedMarkers[1] = false
     usedMarkers[2] = false
     usedMarkers[3] = false
@@ -57,7 +39,7 @@ function resetUsedMarkers()
 end
 
 -- Helper function for marking
-function setTargetMarker(unit)
+local function setTargetMarker(unit)
     local class, classFileName = UnitClass(unit)
     for i=1,4 do
         if not usedMarkers[markers[classFileName][i]] then
@@ -68,8 +50,9 @@ function setTargetMarker(unit)
     end
 end
 
+
 -- mark entire group
-function PartyMark.markGroup()
+function PartyMark_markGroup()
     resetUsedMarkers()
     setTargetMarker("player")
     for p=1,GetNumGroupMembers()-1 do
@@ -86,18 +69,16 @@ end
 
 PartyMark:SetScript("OnEvent", eventHandler);
 
-function PartyMark.toggleEventListeners()
+function PartyMark_toggleEventListeners()
     if listening then
         print("Deactivated auto marking mode");
-        self:UnregisterEvent("GROUP_ROSTER_UPDATE");
-        self:UnregisterEvent("PLAYER_LEAVE_COMBAT");
+        PartyMark:UnregisterEvent("GROUP_ROSTER_UPDATE");
+        PartyMark:UnregisterEvent("PLAYER_LEAVE_COMBAT");
         listening = false
     else
         print("Activated auto marking mode");
-        self:RegisterEvent("GROUP_ROSTER_UPDATE");
-        self:RegisterEvent("PLAYER_LEAVE_COMBAT");
+        PartyMark:RegisterEvent("GROUP_ROSTER_UPDATE");
+        PartyMark:RegisterEvent("PLAYER_LEAVE_COMBAT");
         listening = true
     end
 end
-
-return PartyMark
