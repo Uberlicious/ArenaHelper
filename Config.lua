@@ -15,15 +15,15 @@ ArenaHelper:RegisterEvent("PLAYER_LOGOUT")
 
 print("Welcome to |cff009cffArenaHelper|r use |CFFFE8A0E/arenahelper|r for Options.")
 
-defaults = {
+local defaults = {
 	NameplateNum = true,
 	MaxDebuffs = false,
+	MacroHelper = false,
 }
 
 -- On Addon Loaded build tempDB with Defaults and Saved Variables
 function ArenaHelper:ADDON_LOADED()
 	local function initDB(def, tbl, saved)
-		print("init")
 		if type(def) ~= "table" then return {} end
 		if type(tbl) ~= "table" then tbl = {} end
 		if type(saved) ~= "table" then return {} end
@@ -56,9 +56,16 @@ function ArenaHelper:PLAYER_LOGOUT()
 				saved[k] = nil
 			end
 		end
+		for k,v in pairs(saved) do
+			if type(v) == "table" then
+				saved[k] = updateSave(def[k], tbl[k], saved)
+			elseif type(saved[k]) ~= "table" and v ~= def[k] and v ~= tbl[k] then
+				saved[k] = nil
+			end
+		end
 		return saved
 	end
-	ArenaHelperDB = initDB(defaults, HelperDB, ArenaHelperDB)
+	ArenaHelperDB = updateSave(defaults, HelperDB, ArenaHelperDB)
 end
 
 -- Reset the Temp DB to Defaults
@@ -86,21 +93,20 @@ SlashCmdList.ARENAHELPER = function(msg, editbox)
 	msg = msg:lower()
 	if msg == "options" then
 		Opt_ShowOptions()
-	elseif msg == "toggle" then
-		PartyMark_toggleEventListeners()
 	elseif msg == "mark" then
 		PartyMark_markGroup()
+	elseif msg == "toggle" then
+		PartyMark_toggleEventListeners()
 	elseif msg == "pvp" then
-		PvPMacro_GetIDs()
+		PvPMacro_UpdateMacros()
 	elseif msg == "help" or msg ~= "true" then
 		print("|cff009cffArenaHelper|r Help")
 		print("Commands:")
 		print("|CFFFE8A0E/options|r: Opens options window.")
-		print("|CFFFE8A0E/mark|r: Mark group members.")
-		print("|CFFFE8A0E/toggle|r: Toggle automatic marking mode.")
+		print("|CFFFE8A0E/ah mark|r: Mark group members.")
+		print("|CFFFE8A0E/ah toggle|r: Toggle automatic marking mode.")
+		print("|CFFFE8A0E/ah pvp: Force update Macros (will also set icon).")
 	end
 end
 SLASH_ARENAHELPER1 = "/arenahelper"
 SLASH_ARENAHELPER2 = "/ah"
-
-return HelperDB

@@ -82,7 +82,7 @@ Options:SetScript("OnShow", function(self)
 	NameplateNumBtn.Text:SetText("Show Arena Target Numberss")
 	NameplateNumBtn.tooltipText = "Replate arena target nameplate names with target number."
 	NameplateNumBtn:SetScript("OnClick", function(this)
-		local checked = not not this:GetChecked()
+		local checked = this:GetChecked()
 		PlaySound(checked and SOUND_ON or SOUND_OFF)
 		HelperDB.NameplateNum = checked
 		if checked then
@@ -95,23 +95,43 @@ Options:SetScript("OnShow", function(self)
 		end
 	end)
 
-	local MaxDebuffsBtn = CreateFrame("CheckButton", "$parentHotkey", self, "InterfaceOptionsCheckButtonTemplate")
+	local MaxDebuffsBtn = CreateFrame("CheckButton", "$parentMaxDebuffsBtn", self, "InterfaceOptionsCheckButtonTemplate")
 	MaxDebuffsBtn:SetPoint("TOPLEFT", NameplateNumBtn, "BOTTOMLEFT", 0, -12)
 	MaxDebuffsBtn.Text:SetText("Increase Debuffs")
 	MaxDebuffsBtn.tooltipText = "Increases debuffs shown on party members."
 	MaxDebuffsBtn:SetScript("OnClick", function(this)
-		local checked = not not this:GetChecked()
+		local checked = this:GetChecked()
 		PlaySound(checked and SOUND_ON or SOUND_OFF)
 		HelperDB.MaxDebuffs = checked
 		if checked then
-			print("Enable")
+			DEFAULT_CHAT_FRAME:AddMessage("Increased Debuffs Enabled", 0, 1, 0)
 			HelperDB.MaxDebuffs = true
 		else
+			DEFAULT_CHAT_FRAME:AddMessage("Increased Debuffs Disabled", 1, 0, 0)
 			HelperDB.MaxDebuffs = false
 		end
 	end)
 
+	local MacroHelperBtn = CreateFrame("CheckButton", "$parentMacroHelperBtn", self, "InterfaceOptionsCheckButtonTemplate")
+	MacroHelperBtn:SetPoint("TOPLEFT", MaxDebuffsBtn, "BOTTOMLEFT", 0, -12)
+	MacroHelperBtn.Text:SetText("Macro Helper")
+	MacroHelperBtn.tooltipText = "Make and manage macros for pvp talents.\n\nTalents will start with the name \"ptal s{num}\" (ex. slot 1). Multiple talents can be created and managed for a single slot."
+	MacroHelperBtn:SetScript("OnClick", function(this)
+		local checked = this:GetChecked()
+		PlaySound(checked and SOUND_ON or SOUND_OFF)
+		HelperDB.MacroHelper = checked
+		if checked then
+			DEFAULT_CHAT_FRAME:AddMessage("Macro Helper Enabled", 0, 1, 0)
+			HelperDB.MacroHelper = true
+		else
+			DEFAULT_CHAT_FRAME:AddMessage("Macro Helper Disabled", 1, 0, 0)
+			HelperDB.MacroHelper = false
+		end
+	end)
+
 	function self:refresh()
+		NameplateNumBtn:SetChecked(HelperDB.NameplateNum)
+		MaxDebuffsBtn:SetChecked(UberuiDB.Macroname)
 	end
 
 	self:refresh()
