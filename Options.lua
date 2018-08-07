@@ -21,7 +21,7 @@ end
 		button1 = "Close",
 		button2 = "Reset to Defaults",
 		OnAccept = function()
-			self.ShowOptions()
+			Opt_ShowOptions()
 		end,
 		OnCancel = function()
 			HelperDB_reset()
@@ -77,6 +77,20 @@ Options:SetScript("OnShow", function(self)
 		end
 	)
 
+	local CreateMacros = CreateFrame("Button", "$parentHelp" , self, "UIPanelButtonTemplate")
+	CreateMacros:SetPoint("RIGHT", help, "LEFT", -12, 0)
+	CreateMacros:SetWidth(100)
+	CreateMacros:SetHeight(25)
+	CreateMacros:SetText("Create Macros")
+
+	CreateMacros:SetScript(
+		"OnClick",
+		function(self, button, down)
+			PvPMacro_UpdateMacros()
+			print("Macros Created!", 0, 1, 0)
+		end
+	)
+
 	local NameplateNumBtn = CreateFrame("CheckButton", "$parentNameplateNumBtn", self, "InterfaceOptionsCheckButtonTemplate")
 	NameplateNumBtn:SetPoint("TOPLEFT", SubText, "BOTTOMLEFT", 0, -12)
 	NameplateNumBtn.Text:SetText("Show Arena Target Numberss")
@@ -115,7 +129,7 @@ Options:SetScript("OnShow", function(self)
 	local MacroHelperBtn = CreateFrame("CheckButton", "$parentMacroHelperBtn", self, "InterfaceOptionsCheckButtonTemplate")
 	MacroHelperBtn:SetPoint("TOPLEFT", MaxDebuffsBtn, "BOTTOMLEFT", 0, -12)
 	MacroHelperBtn.Text:SetText("Macro Helper")
-	MacroHelperBtn.tooltipText = "Make and manage macros for pvp talents.\n\nTalents will start with the name \"ptal s{num}\" (ex. slot 1). Multiple talents can be created and managed for a single slot.\n\n NOTE: Error logging temporarily enabled to warn if macros are full. "
+	MacroHelperBtn.tooltipText = "Make and manage macros for pvp talents.\n\nTalents will start with the name \"ptal s%n\" (ex. slot 1). Multiple talents can be created and managed for a single slot.\n\nCharacter Specific\n\n|cffff0000NOTE: Error logging temporarily enabled to warn if macros are full.|r"
 	MacroHelperBtn:SetScript("OnClick", function(this)
 		local checked = this:GetChecked()
 		PlaySound(checked and SOUND_ON or SOUND_OFF)
