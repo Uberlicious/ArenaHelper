@@ -115,23 +115,33 @@ Options:SetScript("OnShow", function(self)
 	local MacroHelperBtn = CreateFrame("CheckButton", "$parentMacroHelperBtn", self, "InterfaceOptionsCheckButtonTemplate")
 	MacroHelperBtn:SetPoint("TOPLEFT", MaxDebuffsBtn, "BOTTOMLEFT", 0, -12)
 	MacroHelperBtn.Text:SetText("Macro Helper")
-	MacroHelperBtn.tooltipText = "Make and manage macros for pvp talents.\n\nTalents will start with the name \"ptal s{num}\" (ex. slot 1). Multiple talents can be created and managed for a single slot."
+	MacroHelperBtn.tooltipText = "Make and manage macros for pvp talents.\n\nTalents will start with the name \"ptal s{num}\" (ex. slot 1). Multiple talents can be created and managed for a single slot.\n\n NOTE: Error logging temporarily enabled to warn if macros are full. "
 	MacroHelperBtn:SetScript("OnClick", function(this)
 		local checked = this:GetChecked()
 		PlaySound(checked and SOUND_ON or SOUND_OFF)
-		HelperDB.MacroHelper = checked
+		HelperCharDB.MacroHelper = checked
 		if checked then
 			DEFAULT_CHAT_FRAME:AddMessage("Macro Helper Enabled", 0, 1, 0)
-			HelperDB.MacroHelper = true
 		else
 			DEFAULT_CHAT_FRAME:AddMessage("Macro Helper Disabled", 1, 0, 0)
-			HelperDB.MacroHelper = false
 		end
+	end)
+
+	local MacroCharSpecBtn = CreateFrame("CheckButton", "$parentMacroCharSpecBtn", self, "InterfaceOptionsCheckButtonTemplate")
+	MacroCharSpecBtn:SetPoint("TOPLEFT", MacroHelperBtn, "BOTTOMLEFT", 17, 0)
+	MacroCharSpecBtn.Text:SetText("Character Specific")
+	MacroCharSpecBtn.tooltipText = "Make macros character specific?"
+	MacroCharSpecBtn:SetScript("OnClick", function(this)
+		local checked = this:GetChecked()
+		PlaySound(checked and SOUND_ON or SOUND_OFF)
+		HelperCharDB.MacroChar = checked
 	end)
 
 	function self:refresh()
 		NameplateNumBtn:SetChecked(HelperDB.NameplateNum)
-		MaxDebuffsBtn:SetChecked(UberuiDB.Macroname)
+		MaxDebuffsBtn:SetChecked(HelperDB.MaxDebuffs)
+		MacroHelperBtn:SetChecked(HelperCharDB.MacroHelper)
+		MacroCharSpecBtn:SetChecked(HelperCharDB.MacroChar)
 	end
 
 	self:refresh()

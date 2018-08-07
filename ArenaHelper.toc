@@ -4,6 +4,7 @@
 ## Title: ArenaHelper
 ## Notes: SUI v5.6 by Syiana-Aegwynn
 ## SavedVariables: ArenaHelperDB
+## SavedVariablesPerCharacter: ArenaHelperCharDB
 
 ## CONFIG
 Config.lua

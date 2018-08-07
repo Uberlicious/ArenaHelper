@@ -6,6 +6,7 @@
 local addon, ns = ...
 
 HelperDB = {}
+HelperCharDB = {}
 
 local ArenaHelper=CreateFrame("Frame")
 ArenaHelper:SetScript("OnEvent", function(self, event, ...) return self[event] and self[event](self, ...) end)
@@ -18,7 +19,11 @@ print("Welcome to |cff009cffArenaHelper|r use |CFFFE8A0E/arenahelper|r for Optio
 local defaults = {
 	NameplateNum = true,
 	MaxDebuffs = false,
+}
+
+local charDefaults = {
 	MacroHelper = false,
+	MacroChar = false,
 }
 
 -- On Addon Loaded build tempDB with Defaults and Saved Variables
@@ -39,12 +44,32 @@ function ArenaHelper:ADDON_LOADED()
 		return tbl
 	end
 	HelperDB = initDB(defaults, HelperDB, ArenaHelperDB)
+
+	local function initCharDB(def, tbl, saved)
+		if type(def) ~= "table" then return {} end
+		if type(tbl) ~= "table" then tbl = {} end
+		if type(saved) ~= "table" then return {} end
+		for k, v in pairs(def) do
+		  if type(v) == "table" then
+		    tbl[k] = initCharDB(v, tbl[k], saved[k])
+		  elseif type(tbl[k]) ~= type(v) and saved[k] ~= nil then -- If saved value exists use it
+			tbl[k] = saved[k]
+		  elseif type(tbl[k]) ~= type(v) and saved[k] == nil then -- If saved value does not exist use default
+		    tbl[k] = v
+		  end
+		end
+		return tbl
+	end
+	HelperCharDB = initCharDB(charDefaults, HelperCharDB, ArenaHelperCharDB)
 	self:UnregisterEvent("ADDON_LOADED")
 end
 
 -- On Logout Save variables that are not default
 function ArenaHelper:PLAYER_LOGOUT()
 	local function updateSave(def, tbl, saved)
+		if type(def) ~= "table" then return {} end
+		if type(tbl) ~= "table" then tbl = {} end
+		if type(saved) ~= "table" then return {} end
 		for k,v in pairs(tbl) do
 			if type(v) == "table" then
 				saved[k] = updateSave(def[k], v, saved[k])
@@ -56,16 +81,46 @@ function ArenaHelper:PLAYER_LOGOUT()
 				saved[k] = nil
 			end
 		end
-		for k,v in pairs(saved) do
-			if type(v) == "table" then
-				saved[k] = updateSave(def[k], tbl[k], saved)
-			elseif type(saved[k]) ~= "table" and v ~= def[k] and v ~= tbl[k] then
-				saved[k] = nil
+		if (saved) then
+			for k,v in pairs(saved) do
+				if type(v) == "table" then
+					saved[k] = updateSave(def[k], tbl[k], saved)
+				elseif type(saved[k]) ~= "table" and v ~= def[k] and v ~= tbl[k] then
+					saved[k] = nil
+				end
 			end
 		end
 		return saved
 	end
 	ArenaHelperDB = updateSave(defaults, HelperDB, ArenaHelperDB)
+
+	local function updateCharSave(def, tbl, saved)
+		if type(def) ~= "table" then return {} end
+		if type(tbl) ~= "table" then tbl = {} end
+		if type(saved) ~= "table" then return {} end
+		for k,v in pairs(tbl) do
+			if type(v) == "table" then
+				saved[k] = updateCharSave(def[k], v, saved[k])
+			elseif type(saved[k]) ~= type(v) and v ~= def[k] then -- If temp value does not equal the default, save it
+				saved[k] = v
+			elseif type(saved[k]) ~= "table" and v == def[k] and saved[k] ~= def[k] then -- Unset saved value if temp == default and saved value exists
+				saved[k] = nil
+			elseif type(saved[k]) ~= "table" and saved[k] == def[k] then -- Cleanup if save value happens to == default
+				saved[k] = nil
+			end
+		end
+		if (saved) then
+			for k,v in pairs(saved) do
+				if type(v) == "table" then
+					saved[k] = updateCharSave(def[k], tbl[k], saved)
+				elseif type(saved[k]) ~= "table" and v ~= def[k] and v ~= tbl[k] then
+					saved[k] = nil
+				end
+			end
+		end
+		return saved
+	end
+	ArenaHelperCharDB = updateCharSave(charDefaults, HelperCharDB, ArenaHelperCharDB)
 end
 
 -- Reset the Temp DB to Defaults

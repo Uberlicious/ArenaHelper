@@ -12,7 +12,7 @@ MaxDebuffs:SetScript("OnEvent", function(self, event)
 end)
 
 function MaxDebuffs_Enable()
-	local function sp(f,i)
+	local function SetPoint(f,i)
 		tr="TOPRIGHT"
 		f2=f.debuffFrames
 		s=f2[1]:GetWidth()
@@ -27,7 +27,7 @@ function MaxDebuffs_Enable()
 			f3:SetPoint(tr,f2[1],tr,-(s*(i-3)),0) 
 		end 
 	end
-	local function CBF(f,i) 
+	local function CreateButtonFrame(f,i) 
 		bf=CreateFrame("Button",f:GetName().."Debuff"..i,f,"CompactDebuffTemplate")
 		bf.baseSize=22
 		bf:SetSize(f.buffFrames[1]:GetSize()) 
@@ -35,7 +35,7 @@ function MaxDebuffs_Enable()
 	
 	local function mv(f) 
 		for i=4,12 do 
-			sp(f,i) 
+			SetPoint(f,i) 
 		end 
 	end
 	
