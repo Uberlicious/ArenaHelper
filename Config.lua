@@ -19,6 +19,8 @@ print("Welcome to |cff009cffArenaHelper|r use |CFFFE8A0E/arenahelper|r for Optio
 local defaults = {
 	NameplateNum = true,
 	MaxDebuffs = false,
+	SortTop	= false,
+	SortBot = false,
 }
 
 local charDefaults = {

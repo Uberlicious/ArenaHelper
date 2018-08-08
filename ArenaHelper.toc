@@ -15,3 +15,4 @@ misc\NameplateNum.lua
 misc\MaxDebuffs.lua
 misc\PartyMark.lua
 misc\PvPMacro.lua
+misc\SortGroup.lua

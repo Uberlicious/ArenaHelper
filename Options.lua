@@ -151,11 +151,51 @@ Options:SetScript("OnShow", function(self)
 		HelperCharDB.MacroChar = checked
 	end)
 
+	local SortTopBtn = CreateFrame("CheckButton", "$parentSortTopBtn", self, "InterfaceOptionsCheckButtonTemplate")
+	SortTopBtn:SetPoint("TOPLEFT", MacroCharSpecBtn, "BOTTOMLEFT", -17, -12)
+	SortTopBtn.Text:SetText("Sort Group Player Top")
+	SortTopBtn.tooltipText = "Sorts raid style part frames with yourself at the top at all times when not in a raid with more than 5 people."
+	SortTopBtn:SetScript("OnClick", function(this)
+		local checked = this:GetChecked()
+		PlaySound(checked and SOUND_ON or SOUND_OFF)
+		HelperDB.SortTop = checked
+		if checked then
+			HelperDB.SortBot = false
+			SortGroup_SortTop()
+			self:refresh()
+			DEFAULT_CHAT_FRAME:AddMessage("Group sorting player top enabled.", 0, 1, 0)
+		else
+			SortGroup_SortTop()
+			DEFAULT_CHAT_FRAME:AddMessage("Group sorting player bottom enabled.", 1, 0, 0)
+		end
+	end)
+
+	local SortBotBtn = CreateFrame("CheckButton", "$parentSortBotBtn", self, "InterfaceOptionsCheckButtonTemplate")
+	SortBotBtn:SetPoint("TOPLEFT", SortTopBtn, "BOTTOMLEFT", 17, 0)
+	SortBotBtn.Text:SetText("Sort Group Player Bottom")
+	SortBotBtn.tooltipText = "Sorts raid style part frames with yourself at the bottom at all times when not in a raid with more than 5 people."
+	SortBotBtn:SetScript("OnClick", function(this)
+		local checked = this:GetChecked()
+		PlaySound(checked and SOUND_ON or SOUND_OFF)
+		HelperDB.SortBot = checked
+		if checked then
+			HelperDB.SortTop = false
+			SortGroup_SortBot()
+			self:refresh()
+			DEFAULT_CHAT_FRAME:AddMessage("Group sorting player bottom enabled.", 0, 1, 0)
+		else
+			SortGroup_SortBot()
+			DEFAULT_CHAT_FRAME:AddMessage("Group sorting player bottom enabled.", 1, 0, 0)
+		end
+	end)
+
 	function self:refresh()
 		NameplateNumBtn:SetChecked(HelperDB.NameplateNum)
 		MaxDebuffsBtn:SetChecked(HelperDB.MaxDebuffs)
 		MacroHelperBtn:SetChecked(HelperCharDB.MacroHelper)
 		MacroCharSpecBtn:SetChecked(HelperCharDB.MacroChar)
+		SortTopBtn:SetChecked(HelperDB.SortTop)
+		SortBotBtn:SetChecked(HelperDB.SortBot)
 	end
 
 	self:refresh()
