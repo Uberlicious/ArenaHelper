@@ -2,7 +2,15 @@
     Sort Group
 ]]--
 local addon, ns = ...
-SorGroup = {}
+local SorGroup = {}
+local UpdateTable = {}
+
+local internValues_DB = {
+    showChatMessages = false, -- true when "PLAYER_ENTERING_WORLD" fired or cb Event gets triggered
+    inCombat = false, -- true when "PLAYER_REGEN_DISABLED" fired    
+    ddmItems = {}, -- ddm content
+    GroupMembersOoC = 0
+}
 
 local SortGroup = CreateFrame("frame")
 SortGroup:RegisterEvent("ADDON_LOADED")
@@ -18,6 +26,44 @@ SortGroup:SetScript("OnEvent", function(self,event)
         SortGroup_SortTop()
     elseif HelperDB.SortBot then
         SortGroup_SortBot()
+    end
+
+    --Frame Events
+    if ( event == "PLAYER_REGEN_ENABLED" ) then
+        internValues_DB.inCombat = false;
+        internValues_DB.GroupMembersOoC = 0;
+        for k, v in pairs(UpdateTable) do
+            UpdateTable[k] = nil
+            _G[v](_G[k])
+        end
+        if ( defaultValues_DB.AutoActivate == true or SortGroup_Variable_Page2_AdditionalSwitchActive == true ) then
+            SortInterstation(true);
+        else
+            SortInterstation(false);
+        end
+    elseif ( event == "GROUP_ROSTER_UPDATE" ) then
+        if ( defaultValues_DB.AutoActivate == true or SortGroup_Variable_Page2_AdditionalSwitchActive == true ) then
+            SortInterstation(true);
+        else
+            SortInterstation(false);
+        end
+        if ( defaultValues_DB.ShowGroupMembersInCombat == true ) then
+            if ( internValues_DB.inCombat == true ) then
+                local cacheText = L["SortGroup_numberOfMembers_output"];
+                cacheText = cacheText:gsub("'replacement'", GetNumGroupMembers());
+                if ( (GetNumGroupMembers() - internValues_DB.GroupMembersOoC) > 0 ) then
+                    cacheText = cacheText:gsub("'replacement2'", ColorText( (GetNumGroupMembers() - internValues_DB.GroupMembersOoC), "green" ) );
+                elseif ( (GetNumGroupMembers() - internValues_DB.GroupMembersOoC) < 0 ) then
+                    cacheText = cacheText:gsub("'replacement2'", ColorText( (GetNumGroupMembers() - internValues_DB.GroupMembersOoC), "red" ) );
+                else
+                    cacheText = cacheText:gsub("'replacement2'", (GetNumGroupMembers() - internValues_DB.GroupMembersOoC) );
+                end
+                print(ColorText(cacheText, "option"));
+                --print("Actuall members: "..GetNumGroupMembers().." , displayed members: ".. (GetNumGroupMembers() - internValues_DB.GroupMembersOoC) );
+            else
+                internValues_DB.GroupMembersOoC = 0;
+            end
+        end
     end
 end)
 
@@ -54,3 +100,4 @@ function SortGroup_SortBot()
     end
     CompactRaidFrameContainer_SetFlowSortFunction(CompactRaidFrameContainer, CRFSort_BottomUpwards)
 end
+
