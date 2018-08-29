@@ -62,7 +62,6 @@ end
 function PvPMacro_UpdateMacros()
 	local body = "#showtooltip\n/cast %s"
 	if InCombatLockdown() then
-		print("Unable to create macros while in combat!\nWaiting until combat is finished.")
 		PvPMacro:RegisterEvent("PLAYER_REGEN_ENABLED")
 		return
 	end

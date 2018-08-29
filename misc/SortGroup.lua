@@ -2,7 +2,19 @@
     Sort Group
 ]]--
 local addon, ns = ...
+<<<<<<< HEAD
 SortGroup = {}
+=======
+local SorGroup = {}
+local UpdateTable = {}
+
+local internValues_DB = {
+    showChatMessages = false, -- true when "PLAYER_ENTERING_WORLD" fired or cb Event gets triggered
+    inCombat = false, -- true when "PLAYER_REGEN_DISABLED" fired    
+    ddmItems = {}, -- ddm content
+    GroupMembersOoC = 0
+}
+>>>>>>> eb55cd2d8aaebde695a51d8d66f21a4baf7d5092
 
 local SortGroup = CreateFrame("frame")
 SortGroup:RegisterEvent("ADDON_LOADED")
@@ -21,7 +33,48 @@ SortGroup:SetScript("OnEvent", function(self,event)
             SortGroup_SortBot()
         end
     end
+<<<<<<< HEAD
     
+=======
+
+    --Frame Events
+    if ( event == "PLAYER_REGEN_ENABLED" ) then
+        internValues_DB.inCombat = false;
+        internValues_DB.GroupMembersOoC = 0;
+        for k, v in pairs(UpdateTable) do
+            UpdateTable[k] = nil
+            _G[v](_G[k])
+        end
+        if ( defaultValues_DB.AutoActivate == true or SortGroup_Variable_Page2_AdditionalSwitchActive == true ) then
+            SortInterstation(true);
+        else
+            SortInterstation(false);
+        end
+    elseif ( event == "GROUP_ROSTER_UPDATE" ) then
+        if ( defaultValues_DB.AutoActivate == true or SortGroup_Variable_Page2_AdditionalSwitchActive == true ) then
+            SortInterstation(true);
+        else
+            SortInterstation(false);
+        end
+        if ( defaultValues_DB.ShowGroupMembersInCombat == true ) then
+            if ( internValues_DB.inCombat == true ) then
+                local cacheText = L["SortGroup_numberOfMembers_output"];
+                cacheText = cacheText:gsub("'replacement'", GetNumGroupMembers());
+                if ( (GetNumGroupMembers() - internValues_DB.GroupMembersOoC) > 0 ) then
+                    cacheText = cacheText:gsub("'replacement2'", ColorText( (GetNumGroupMembers() - internValues_DB.GroupMembersOoC), "green" ) );
+                elseif ( (GetNumGroupMembers() - internValues_DB.GroupMembersOoC) < 0 ) then
+                    cacheText = cacheText:gsub("'replacement2'", ColorText( (GetNumGroupMembers() - internValues_DB.GroupMembersOoC), "red" ) );
+                else
+                    cacheText = cacheText:gsub("'replacement2'", (GetNumGroupMembers() - internValues_DB.GroupMembersOoC) );
+                end
+                print(ColorText(cacheText, "option"));
+                --print("Actuall members: "..GetNumGroupMembers().." , displayed members: ".. (GetNumGroupMembers() - internValues_DB.GroupMembersOoC) );
+            else
+                internValues_DB.GroupMembersOoC = 0;
+            end
+        end
+    end
+>>>>>>> eb55cd2d8aaebde695a51d8d66f21a4baf7d5092
 end)
 
 function SortGroup_SortTop()
@@ -58,4 +111,7 @@ function SortGroup_SortBot()
     CompactRaidFrameContainer_SetFlowSortFunction(CompactRaidFrameContainer, CRFSort_BottomUpwards)
 end
 
+<<<<<<< HEAD
 ArenaHelper.SortGroup = SortGroup
+=======
+>>>>>>> eb55cd2d8aaebde695a51d8d66f21a4baf7d5092
