@@ -2,7 +2,7 @@
     Sort Group
 ]]--
 local addon, ns = ...
-SorGroup = {}
+SortGroup = {}
 
 local SortGroup = CreateFrame("frame")
 SortGroup:RegisterEvent("ADDON_LOADED")
@@ -14,11 +14,14 @@ SortGroup:RegisterEvent("PLAYER_REGEN_ENABLED")
 SortGroup:RegisterEvent("GROUP_ROSTER_UPDATE")
 SortGroup:SetScript("OnEvent", function(self,event)
     local Partyraid = GetCVar("useCompactPartyFrames")
-    if HelperDB.SortTop then
-        SortGroup_SortTop()
-    elseif HelperDB.SortBot then
-        SortGroup_SortBot()
+    if not IsInRaid() and GetNumGroupMembers(raid) <= 5 then
+        if HelperDB.SortTop then
+            SortGroup_SortTop()
+        elseif HelperDB.SortBot then
+            SortGroup_SortBot()
+        end
     end
+    
 end)
 
 function SortGroup_SortTop()
@@ -54,3 +57,5 @@ function SortGroup_SortBot()
     end
     CompactRaidFrameContainer_SetFlowSortFunction(CompactRaidFrameContainer, CRFSort_BottomUpwards)
 end
+
+ArenaHelper.SortGroup = SortGroup

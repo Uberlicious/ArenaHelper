@@ -19,8 +19,6 @@ function MaxDebuffs_Enable()
 		f3=f2[i]
 		f3:SetSize(s,s)
 		f3:ClearAllPoints()
-		print(f2)
-		print(f3)
 		if i>6 then 
 			f3:SetPoint("BOTTOMRIGHT",f2[i-3],tr,0,0) 
 		else 
@@ -43,7 +41,7 @@ function MaxDebuffs_Enable()
 		CompactUnitFrame_SetMaxDebuffs(f,12) 
 		if not f.debuffFrames[4] then 
 			for i=4,12 do 
-				CBF(f,i) 
+				CreateButtonFrame(f,i) 
 			end 
 		end 
 	mv(f) 

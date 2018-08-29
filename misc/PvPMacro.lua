@@ -60,7 +60,6 @@ function PvPMacro:PLAYER_REGEN_ENABLED()
 end
 
 function PvPMacro_UpdateMacros()
-	SetCVar("scriptErrors", 1)
 	local body = "#showtooltip\n/cast %s"
 	if InCombatLockdown() then
 		print("Unable to create macros while in combat!\nWaiting until combat is finished.")
@@ -112,6 +111,5 @@ function PvPMacro_UpdateMacros()
    	  		end
    	  	end
    	  end
-   	  SetCVar("scriptErrors", 0)
     end
 end

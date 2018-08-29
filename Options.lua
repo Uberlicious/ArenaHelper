@@ -129,7 +129,7 @@ Options:SetScript("OnShow", function(self)
 	local MacroHelperBtn = CreateFrame("CheckButton", "$parentMacroHelperBtn", self, "InterfaceOptionsCheckButtonTemplate")
 	MacroHelperBtn:SetPoint("TOPLEFT", MaxDebuffsBtn, "BOTTOMLEFT", 0, -12)
 	MacroHelperBtn.Text:SetText("Macro Helper")
-	MacroHelperBtn.tooltipText = "Make and manage macros for pvp talents.\n\nTalents will start with the name \"ptal s%n\" (ex. slot 1). Multiple talents can be created and managed for a single slot.\n\nCharacter Specific\n\n|cffff0000NOTE: Error logging temporarily enabled to warn if macros are full.|r"
+	MacroHelperBtn.tooltipText = "Make and manage macros for pvp talents.\n\nTalents will start with the name \"ptal s%n\" (ex. slot 1). Multiple talents can be created and managed for a single slot.\n\nCharacter Specific"
 	MacroHelperBtn:SetScript("OnClick", function(this)
 		local checked = this:GetChecked()
 		PlaySound(checked and SOUND_ON or SOUND_OFF)
