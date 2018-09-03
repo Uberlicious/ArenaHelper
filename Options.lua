@@ -87,7 +87,7 @@ Options:SetScript("OnShow", function(self)
 		"OnClick",
 		function(self, button, down)
 			PvPMacro_UpdateMacros()
-			print("Macros Created!", 0, 1, 0)
+			DEFAULT_CHAT_FRAME:AddMessage("Macros Created", 0, 1, 0)
 		end
 	)
 

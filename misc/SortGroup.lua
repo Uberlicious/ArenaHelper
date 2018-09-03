@@ -2,9 +2,7 @@
     Sort Group
 ]]--
 local addon, ns = ...
-<<<<<<< HEAD
-SortGroup = {}
-=======
+
 local SorGroup = {}
 local UpdateTable = {}
 
@@ -14,7 +12,6 @@ local internValues_DB = {
     ddmItems = {}, -- ddm content
     GroupMembersOoC = 0
 }
->>>>>>> eb55cd2d8aaebde695a51d8d66f21a4baf7d5092
 
 local SortGroup = CreateFrame("frame")
 SortGroup:RegisterEvent("ADDON_LOADED")
@@ -33,9 +30,6 @@ SortGroup:SetScript("OnEvent", function(self,event)
             SortGroup_SortBot()
         end
     end
-<<<<<<< HEAD
-    
-=======
 
     --Frame Events
     if ( event == "PLAYER_REGEN_ENABLED" ) then
@@ -73,8 +67,6 @@ SortGroup:SetScript("OnEvent", function(self,event)
                 internValues_DB.GroupMembersOoC = 0;
             end
         end
-    end
->>>>>>> eb55cd2d8aaebde695a51d8d66f21a4baf7d5092
 end)
 
 function SortGroup_SortTop()
@@ -111,7 +103,4 @@ function SortGroup_SortBot()
     CompactRaidFrameContainer_SetFlowSortFunction(CompactRaidFrameContainer, CRFSort_BottomUpwards)
 end
 
-<<<<<<< HEAD
 ArenaHelper.SortGroup = SortGroup
-=======
->>>>>>> eb55cd2d8aaebde695a51d8d66f21a4baf7d5092

@@ -4,7 +4,7 @@
 ]]--
 
 local addon, ns = ...
-
+ArenaHelper = {}
 HelperDB = {}
 HelperCharDB = {}
 

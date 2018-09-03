@@ -3,7 +3,7 @@
 ## Version: 8.0.0
 ## Title: ArenaHelper
 ## Notes: SUI v5.6 by Syiana-Aegwynn
-## SavedVariables: ArenaHelperDB
+## SavedVariables: ArenaHelperDB, PvpTalDB
 ## SavedVariablesPerCharacter: ArenaHelperCharDB
 
 ## CONFIG
